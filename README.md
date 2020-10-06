@@ -1,2 +1,0 @@
-# Willow
-Willow Engine
