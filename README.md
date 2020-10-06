@@ -12,3 +12,6 @@ run cmakeWatch to auto recompile everytime you save,
 (best not to use right now because it
 redownloads every external library everytime
 and takes time)
+
+# gui
+to build and run easily, use gui.py
