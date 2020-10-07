@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "Math.h"
 
 
 #include <iostream>
@@ -118,16 +119,23 @@ int AppInit()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    Vector2 A1 = Vector2(-0.9f, -0.5f);
+    Vector2 A2 = Vector2(-0.0f, -0.5f);
+    Vector2 A3 = Vector2(-0.45f, 0.5f);
+
+    Vector2 B1 = Vector2(0.0f, -0.5f);
+    Vector2 B2 = Vector2(0.9f, -0.5f);
+    Vector2 B3 = Vector2(0.45f, 0.5f);
 
     float vertices[] = {
         // first triangle
-        -0.9f, -0.5f, 0.0f,  // left 
-        -0.0f, -0.5f, 0.0f,  // right
-        -0.45f, 0.5f, 0.0f,  // top 
+        A1.x, A1.y, 0.0f,  // left 
+        A2.x, A2.y, 0.0f,  // right
+        A3.x, A3.y, 0.0f,  // top 
         // second triangle
-         0.0f, -0.5f, 0.0f,  // left
-         0.9f, -0.5f, 0.0f,  // right
-         0.45f, 0.5f, 0.0f   // top 
+        B1.x, B1.y, 0.0f,  // left 
+        B2.x, B2.y, 0.0f,  // right
+        B3.x, B3.y, 0.0f,  // top 
     }; 
 
     unsigned int VBO, VAO;

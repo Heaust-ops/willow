@@ -87,6 +87,11 @@ set(LOG_SOURCE
     ${CMAKE_CURRENT_LIST_DIR}/src/Log.cpp
 )
 
+set(MATH_SOURCE
+    ${CMAKE_CURRENT_LIST_DIR}/include/Math.h
+    ${CMAKE_CURRENT_LIST_DIR}/src/Math.cpp
+)
+
 # set(DISPLAY_SOURCE
 #     ${CMAKE_CURRENT_LIST_DIR}/include/display.h
 #     ${CMAKE_CURRENT_LIST_DIR}/src/display.cpp
@@ -94,15 +99,17 @@ set(LOG_SOURCE
 
 add_library(engine STATIC ${ENGINE_SOURCE})
 add_library(log STATIC ${LOG_SOURCE})
+add_library(Math STATIC ${MATH_SOURCE})
 # add_library(display STATIC ${DISPLAY_SOURCE})
 
 
 set(TESTING_SOURCE    ${CMAKE_CURRENT_LIST_DIR}/src/testing.cpp)
 add_executable(program ${TESTING_SOURCE})
-target_link_libraries(engine   glfw linmath glad)
+target_link_libraries(engine   glfw linmath glad Math)
 # target_link_libraries(display   glfw linmath glad)
 target_link_libraries(program   glfw linmath glad)
 target_link_libraries(program   engine)
 target_link_libraries(program   ${OPENGL_LIBRARIES})
 target_link_libraries(program   log)
+target_link_libraries(program   log Math)
 # target_link_libraries(program   display)
