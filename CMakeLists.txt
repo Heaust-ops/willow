@@ -48,29 +48,6 @@ if(NOT glad_POPULATED)
     add_subdirectory(${glad_SOURCE_DIR} ${glad_BINARY_DIR})
 endif()
 
-# FetchContent_Declare(
-#         SDL2
-#         GIT_REPOSITORY "https://github.com/SDL-mirror/SDL.git"
-#         GIT_TAG release-2.0.10
-# )
-
-# FetchContent_GetProperties(SDL2)
-# if (NOT sdl2_POPULATED)
-#     FetchContent_Populate(SDL2)
-#     add_subdirectory(${sdl2_SOURCE_DIR} ${sdl2_BINARY_DIR})
-# endif ()
-
-# FetchContent_Declare(
-#     GLEW
-#     GIT_REPOSITORY "https://github.com/davidnr/glew.git"
-# )
-
-# FetchContent_GetProperties(glew)
-# if(NOT glew_POPULATED)
-#     FetchContent_Populate(glew)
-#     add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
-# endif()
-
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/vendor/spdlog/include)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/include)
 
