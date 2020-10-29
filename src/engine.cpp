@@ -15,6 +15,8 @@ Vector2 B1 = Vector2(0.5f,  0.5f);
 Vector2 B2 = Vector2(-0.5f, -0.5f);
 Vector2 B3 = Vector2(-0.5f,  0.5f);
 
+enum colors {Red, Green, Blue} fragShader; 
+
 float vertices[] = {
     // first triangle
     A1.x, A1.y, 0.0f,  // left 
@@ -27,6 +29,7 @@ float vertices[] = {
 }; 
 
 // Make Shader Sources
+unsigned int shader;
 
 std::string vertexShader = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
@@ -34,25 +37,29 @@ std::string vertexShader = "#version 330 core\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\n";
+
 std::string fragmentShaderBlue = "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 blue_color_var;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(0.2f, 0.6f, 1.0f, 1.0f);\n"
+    "   FragColor = blue_color_var;\n"
     "}\n";
 
 std::string fragmentShaderRed = "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 red_color_var;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.3f, 0.3f, 1.0f);\n"
+    "   FragColor = red_color_var;\n"
     "}\n";
 
 std::string fragmentShaderGreen = "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 green_color_var;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(0.2f, 0.9f, 0.5f, 1.0f);\n"
+    "   FragColor = green_color_var;\n"
     "}\n";
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
@@ -105,6 +112,30 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 
 }
 
+void setColors (unsigned int shader)
+{
+    float timeValue = glfwGetTime();
+    float fluc = (sin(timeValue) / 2.0f) + 0.5f;
+
+    if (fragShader == Red)
+    {
+    int redColorVarLocation = glGetUniformLocation(shader, "red_color_var");
+    glUniform4f(redColorVarLocation, fluc, 0.0f, 0.0f, 1.0f);
+    }
+
+    if (fragShader == Blue)
+    {
+    int blueColorVarLocation = glGetUniformLocation(shader, "blue_color_var");
+    glUniform4f(blueColorVarLocation, 0.0f, 0.0f, fluc, 1.0f);
+    }
+
+    if (fragShader == Green)
+    {
+    int greenColorVarLocation = glGetUniformLocation(shader, "green_color_var");
+    glUniform4f(greenColorVarLocation, 0.0f, fluc, 0.0f, 1.0f);
+    }
+}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -119,21 +150,27 @@ void processInput(GLFWwindow *window)
     
     if(glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
     {
-        unsigned int shader = CreateShader(vertexShader, fragmentShaderBlue);
+        shader = CreateShader(vertexShader, fragmentShaderBlue);
+        fragShader = Blue;
+        setColors(shader);
         glUseProgram(shader);
     }
 
     if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
     {
-        unsigned int shader = CreateShader(vertexShader, fragmentShaderRed);
+        shader = CreateShader(vertexShader, fragmentShaderRed);
+        fragShader = Red;
+        setColors(shader);
         glUseProgram(shader);
     }
 
     if(glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-        {
-            unsigned int shader = CreateShader(vertexShader, fragmentShaderGreen);
-            glUseProgram(shader);
-        }
+    {
+        shader = CreateShader(vertexShader, fragmentShaderGreen);
+        fragShader = Green;
+        setColors(shader);
+        glUseProgram(shader);
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -179,7 +216,6 @@ int AppInit()
 
 
 
-
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -200,7 +236,13 @@ int AppInit()
 
 
 
-unsigned int shader = CreateShader(vertexShader, fragmentShaderBlue);
+
+shader = CreateShader(vertexShader, fragmentShaderBlue);
+fragShader = Blue;
+
+setColors(shader);
+
+
 glUseProgram(shader);
 
 
@@ -214,6 +256,9 @@ glUseProgram(shader);
     {
         // input
         processInput(window);
+
+        // update the uniform color
+        setColors(shader);
 
         // render work
         glClear(GL_COLOR_BUFFER_BIT);
